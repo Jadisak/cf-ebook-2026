@@ -7,8 +7,14 @@
 .vscode/
 .idea/
 
-# Archives
+# Archives & Temporary files
 Archive.zip
+*.bak
 
-# Netlify
+# Netlify & Cloudflare
 .netlify/
+.wrangler/
+
+# Large binaries omitted from Cloudflare Pages (hosted externally on Firebase Storage)
+*.pdf
+*.mp4

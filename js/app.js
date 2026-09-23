@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Multimedia configuration for pages with embedded videos
     const VIDEO_PAGES = {
         7: {
-            src: 'P-07-vdo.mp4',
+            src: 'https://storage.googleapis.com/connext-47f56.firebasestorage.app/ebook-2026/P-07-vdo.mp4',
             title: 'วิดีโอ: รับผลประโยชน์รวมสูงสุด 800%* (หน้า 7)',
             subtitle: 'AIA Healthier, Longer, Better Lives - สิทธิประโยชน์ความคุ้มครองโรคร้ายแรง'
         },
         14: {
-            src: 'P14-vdo.mp4',
+            src: 'https://storage.googleapis.com/connext-47f56.firebasestorage.app/ebook-2026/P14-vdo.mp4',
             title: 'วิดีโอ: ต้องขอบคุณตัวเองตอนนั้น ที่ทำประกันโรคร้ายแรง (หน้า 14)',
             subtitle: 'AIA Healthier, Longer, Better Lives - เรื่องจริงและกำลังใจจากผู้เอาประกัน'
         }
