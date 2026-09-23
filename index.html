@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-100">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Book 2026 - Flip Pages Reader</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <!-- Google Fonts: IBM Plex Sans Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="h-full w-full flex flex-col bg-slate-100 text-slate-800 select-none overflow-hidden">
+
+    <!-- APP CONTAINER -->
+    <div id="app-container" class="h-full w-full flex flex-col relative z-10">
+
+        <!-- 1. TOP TOOLBAR -->
+        <header id="top-toolbar" class="h-16 px-4 md:px-6 flex items-center justify-between glass-panel shadow-md z-20 shrink-0">
+            <!-- Left Section: Title & Layout Badge -->
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 flex items-center justify-center">
+                    <img src="Logo-2020.png" alt="LICA Logo" class="h-10 w-auto object-contain">
+                </div>
+                <div>
+                    <h1 class="font-semibold text-base md:text-lg text-slate-800 tracking-wide flex items-center space-x-2">
+                        <span>LICA E-Book 2026</span>
+                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-200 text-amber-700 border border-slate-300 hidden sm:inline-block">DEMO</span>
+                    </h1>
+                    <p id="layout-mode-badge" class="text-[11px] text-slate-600 font-medium">
+                        สโมสรไลก้า - สงวนสิทธิ์
+                    </p>
+                </div>
+            </div>
+
+            <!-- Middle Section: Display & Autoplay Mode -->
+            <div class="hidden lg:flex items-center space-x-2">
+                <button id="btn-mode-toggle" title="สลับโหมดการแสดงผล (หน้าเดียว / หน้าคู่ / อัตโนมัติ)" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-table-columns text-slate-500"></i>
+                    <span>โหมด: อัตโนมัติ</span>
+                </button>
+                <button id="btn-autoplay" title="เล่นเปลี่ยนหน้าอัตโนมัติ" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-play text-amber-500"></i>
+                    <span>เล่นอัตโนมัติ</span>
+                </button>
+            </div>
+
+            <!-- Right Section: Tools (Thumbnails, Zoom, Print, Sound, Fullscreen) -->
+            <div class="flex items-center space-x-1.5 md:space-x-2">
+                <button id="btn-thumbnails" title="ดูภาพขนาดย่อทุกหน้า" class="p-2.5 md:px-3 md:py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-border-all text-blue-500"></i>
+                    <span class="hidden md:inline">ภาพขนาดย่อ</span>
+                </button>
+                
+                <button id="btn-zoom" title="ซูมอ่านรายละเอียดภาพ" class="p-2.5 md:px-3 md:py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-magnifying-glass-plus text-emerald-600"></i>
+                    <span class="hidden md:inline">ซูมภาพ</span>
+                </button>
+
+                <button id="btn-print" title="พิมพ์หน้าเอกสาร" class="p-2.5 md:px-3 md:py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-print text-amber-600"></i>
+                    <span class="hidden md:inline">พิมพ์เอกสาร</span>
+                </button>
+
+                <button id="btn-sound" title="เปิด/ปิด เสียงพลิกหน้ากระดาษ" class="p-2.5 md:px-3 md:py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-amber-600 shadow-sm transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-volume-high"></i>
+                    <span class="hidden lg:inline">เปิดเสียง</span>
+                </button>
+
+                <button id="btn-fullscreen" title="ขยายเต็มหน้าจอ" class="p-2.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 shadow-sm transition">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. MAIN BOOK STAGE -->
+        <main class="flex-1 w-full min-h-0 relative overflow-hidden flex items-center justify-center p-2 md:p-4">
+            <div id="book-stage" class="book-stage w-full h-full max-h-full max-w-full flex items-center justify-center overflow-hidden">
+                <div id="book-container" class="stpageflip-container max-h-full max-w-full flex items-center justify-center">
+                    <!-- Dynamic Page Elements Rendered Here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 3. BOTTOM NAVIGATION TOOLBAR -->
+        <footer id="bottom-toolbar" class="h-16 px-4 md:px-6 flex items-center justify-between glass-panel shadow-lg z-20 shrink-0">
+            <!-- Left Controls: First & Prev -->
+            <div class="flex items-center space-x-1 md:space-x-2">
+                <button id="btn-first" title="ไปหน้าแรก" class="p-2.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button id="btn-prev" title="หน้าก่อนหน้า" class="px-3.5 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs flex items-center space-x-1 shadow-sm transition">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span class="hidden sm:inline">ก่อนหน้า</span>
+                </button>
+            </div>
+
+            <!-- Center Controls: Slider & Page Input -->
+            <div class="flex-1 max-w-xl mx-3 md:mx-6 flex items-center space-x-3">
+                <input id="page-slider" type="range" min="1" max="36" value="1" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-amber-500" />
+                
+                <div class="flex items-center space-x-1 bg-white border border-slate-200 shadow-sm rounded-lg px-2 py-1 shrink-0">
+                    <span class="text-xs text-slate-500">หน้า</span>
+                    <input id="page-input" type="number" min="1" max="36" value="1" class="w-10 text-center bg-slate-50 text-amber-700 font-bold text-xs rounded border border-slate-200 focus:outline-none focus:border-amber-500" />
+                    <span id="total-pages-label" class="text-xs text-slate-500">/ 36</span>
+                </div>
+
+                <div id="page-display-badge" class="hidden lg:block text-xs font-medium text-slate-700 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm shrink-0">
+                    หน้า 1 / 36
+                </div>
+            </div>
+
+            <!-- Right Controls: Next & Last -->
+            <div class="flex items-center space-x-1 md:space-x-2">
+                <button id="btn-next" title="หน้าถัดไป" class="px-3.5 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center space-x-1 transition shadow-md shadow-amber-500/20">
+                    <span class="hidden sm:inline">ถัดไป</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button id="btn-last" title="ไปหน้าสุดท้าย" class="p-2.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- 4. THUMBNAIL GRID DRAWER MODAL -->
+    <div id="thumbnail-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-border-all text-amber-400 text-lg"></i>
+                    <h2 class="font-bold text-lg text-slate-100">ภาพขนาดย่อทั้งหมด (36 หน้า)</h2>
+                </div>
+                <button id="btn-close-thumbnails" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <!-- Modal Grid Body -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div id="thumbnail-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <!-- Rendered dynamically by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ZOOM LIGHTBOX MODAL -->
+    <div id="zoom-modal" class="fixed inset-0 z-50 hidden flex-col bg-slate-950/95 backdrop-blur-lg">
+        <!-- Modal Toolbar -->
+        <div class="h-16 px-6 border-b border-slate-800 flex items-center justify-between glass-panel">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-magnifying-glass-plus text-emerald-400"></i>
+                <h2 class="font-bold text-sm md:text-base text-slate-100">โหมดซูมอ่านรายละเอียดเอกสาร</h2>
+                <span class="text-xs text-slate-400 hidden sm:inline">(ใช้เมาส์ลาก หรือ Scroll Wheel เพื่อซูม)</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="btn-zoom-out" class="p-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+                <button id="btn-zoom-reset" class="p-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium">
+                    100%
+                </button>
+                <button id="btn-zoom-in" class="p-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button id="btn-close-zoom" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 ml-4 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Zoom Image Container -->
+        <div id="zoom-container" class="flex-1 w-full h-full overflow-hidden flex items-center justify-center p-4 relative cursor-grab active:cursor-grabbing">
+            <img id="zoom-img" src="" alt="Zoom Page" class="max-w-full max-h-full object-contain transition-transform duration-100 ease-out shadow-2xl rounded" />
+        </div>
+    </div>
+
+    <!-- 6. PRINT OPTIONS MODAL -->
+    <div id="print-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-modal w-full max-w-md rounded-2xl flex flex-col shadow-2xl p-6 border border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-print text-amber-400 text-xl"></i>
+                    <h2 class="font-bold text-lg text-slate-100">พิมพ์หน้าเอกสาร (Print)</h2>
+                </div>
+                <button id="btn-close-print" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <p class="text-sm text-slate-300 mb-6">
+                กรุณาเลือกตัวเลือกการพิมพ์หน้าเอกสารบิตแมพที่ต้องการ:
+            </p>
+
+            <div class="space-y-3">
+                <button id="btn-print-current" class="w-full p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left transition flex items-center space-x-4 group">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg group-hover:scale-110 transition">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-slate-100">พิมพ์หน้าที่กำลังเปิดดูอยู่</div>
+                        <div class="text-xs text-slate-400">พิมพ์เฉพาะหน้าที่กำลังแสดงผลปัจจุบัน</div>
+                    </div>
+                </button>
+
+                <button id="btn-print-all" class="w-full p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left transition flex items-center space-x-4 group">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg group-hover:scale-110 transition">
+                        <i class="fa-solid fa-copy"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-slate-100">พิมพ์เอกสารทั้งหมด (36 หน้า)</div>
+                        <div class="text-xs text-slate-400">ส่งออกเป็นไฟล์การพิมพ์แบบเต็มทุกหน้า</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. INVISIBLE PRINT DOM CONTAINER -->
+    <div id="print-section" class="hidden"></div>
+
+    <!-- 8. VIDEO CINEMA LIGHTBOX MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/90 backdrop-blur-xl p-3 md:p-6">
+        <div class="glass-modal w-full max-w-4xl rounded-2xl flex flex-col shadow-2xl border border-slate-800/90 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-5 py-3.5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/80">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 text-white flex items-center justify-center text-sm shadow-md shadow-rose-950/40">
+                        <i class="fa-solid fa-play ml-0.5"></i>
+                    </div>
+                    <div>
+                        <h2 id="video-modal-title" class="font-bold text-sm md:text-base text-slate-100 flex items-center space-x-2">
+                            <span>วิดีโอคลิป</span>
+                            <span class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-rose-950/80 text-rose-300 border border-rose-800/60">HD 720p</span>
+                        </h2>
+                        <p id="video-modal-subtitle" class="text-xs text-slate-400">
+                            AIA Healthier, Longer, Better Lives
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="btn-close-video" title="ปิดหน้าต่างวิดีโอ (Esc)" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Video Container -->
+            <div class="relative w-full aspect-video bg-black border-4 border-white flex items-center justify-center">
+                <video id="modal-video-player" class="w-full h-full object-contain" controls playsinline preload="metadata">
+                    <source id="modal-video-source" src="" type="video/mp4" />
+                    เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ HTML5
+                </video>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-5 py-2.5 bg-slate-900/60 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+                <span>กดปุ่ม <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[10px]">Esc</kbd> หรือคลิกภายนอกเพื่อปิด</span>
+                <span class="text-slate-300 font-medium flex items-center space-x-1.5">
+                    <i class="fa-solid fa-film text-amber-400"></i>
+                    <span>LICA 2026 Interactive Multimedia</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS SCRIPTS -->
+    <script src="js/page-flip.browser.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

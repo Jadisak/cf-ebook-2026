@@ -1,0 +1,276 @@
+/* styles.css - Custom Styling for E-Book Flip Pages in Elegant Light Gray Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-light-primary: #bdc7d0;
+    --bg-light-secondary: #c1c1c1;
+    --bg-light-tertiary: #bcbcbc;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-light: #e2e8f0;
+    --accent-gold: #d97706;
+    --accent-blue: #0284c7;
+}
+
+body {
+    font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-light-primary);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(203, 213, 225, 0.4) 0px, transparent 50%);
+    color: var(--text-primary);
+    user-select: none;
+    overflow: hidden;
+}
+
+/* Scrollbar Customization for Light Gray Theme */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #e2e8f0;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Book Container Wrapper */
+.book-stage {
+    perspective: 2000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* StPageFlip Custom Canvas & HTML Page Styling */
+.stpageflip-container {
+    box-shadow: 
+        0 20px 40px -15px rgba(0, 0, 0, 0.2),
+        0 0 25px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+    margin: auto;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Center Front Cover (Page 1) in Landscape Mode: shift left 25% */
+.stpageflip-container.is-cover-first {
+    transform: translateX(-25%);
+    box-shadow: none !important;
+}
+
+/* Center Back Cover (Page 36) in Landscape Mode: shift right 25% */
+.stpageflip-container.is-cover-last {
+    transform: translateX(25%);
+    box-shadow: none !important;
+}
+
+/* Outer drop shadow applied directly to the cover page so no ghost empty frame is visible */
+.stpageflip-container.is-cover-first .page.hard-cover,
+.stpageflip-container.is-cover-last .page.hard-cover {
+    box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.15),
+        0 20px 40px -15px rgba(0, 0, 0, 0.25),
+        0 0 25px rgba(0, 0, 0, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.stpageflip-container.is-cover-first .page::after,
+.stpageflip-container.is-cover-last .page::after {
+    display: none !important;
+}
+
+.stf__parent {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    margin: auto !important;
+}
+
+.stf__wrapper {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    margin: auto !important;
+    padding-bottom: 0 !important;
+    height: 100% !important;
+}
+
+.stf__block {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    margin: auto !important;
+    height: 100% !important;
+}
+
+.page {
+    background-color: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Center Fold Shadow for Two-Page Spread */
+.page-spread-left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.page-spread-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Hard Cover Effect */
+.hard-cover {
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.15);
+}
+
+/* Loading Overlay */
+.page-loading-spinner {
+    border: 3px solid rgba(0,0,0,0.08);
+    border-top-color: #0284c7;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Glassmorphism Panel - Light Gray Theme */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.glass-modal {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 1);
+}
+
+/* Thumbnail Grid Card Hover Effect */
+.thumb-card {
+    transition: all 0.2s ease-in-out;
+}
+.thumb-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.2);
+}
+.thumb-card.active {
+    border-color: #d97706;
+    box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
+}
+
+/* Video Interactive Hotspot */
+.page-video-wrapper {
+    touch-action: manipulation;
+}
+
+.page-video-wrapper video {
+    outline: none;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+.play-pulse-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 9999px;
+    background: rgba(225, 29, 72, 0.45);
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    pointer-events: none;
+}
+
+/* Zoom Modal Pan Cursor */
+.zoom-draggable {
+    cursor: grab;
+}
+.zoom-draggable:active {
+    cursor: grabbing;
+}
+
+/* Print CSS Media Query */
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        overflow: visible !important;
+    }
+    
+    #app-container, #top-toolbar, #bottom-toolbar, #thumbnail-modal, #zoom-modal, #print-modal {
+        display: none !important;
+    }
+
+    #print-section {
+        display: block !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .print-page-item {
+        page-break-after: always;
+        break-after: page;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+    }
+
+    .print-page-item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
