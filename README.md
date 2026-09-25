@@ -17,3 +17,5 @@
 - StPageFlip Library
 - FontAwesome 6
 - Google Fonts (IBM Plex Sans Thai)
+
+- https://cf-ebook-2026.irvingdesign.workers.dev/
