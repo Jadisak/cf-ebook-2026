@@ -7,19 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
     // 1. CONSTANTS & STATE CONFIGURATION
     // -------------------------------------------------------------
-    const TOTAL_PAGES = 36;
-    const PAGE_FILES = Array.from({ length: TOTAL_PAGES }, (_, i) => `2026-P9-44_${i + 1}.webp`);
+    const TOTAL_PAGES = 42;
+    const PAGE_FILES = Array.from({ length: TOTAL_PAGES }, (_, i) => `Lica-_${i + 1}.webp`);
 
     // Multimedia configuration for pages with embedded videos
     const VIDEO_PAGES = {
-        7: {
-            src: 'https://storage.googleapis.com/connext-47f56.firebasestorage.app/ebook-2026/P-07-vdo.mp4',
-            title: 'วิดีโอ: รับผลประโยชน์รวมสูงสุด 800%* (หน้า 7)',
+        6: {
+            src: 'P-06-vdo.mp4',
+            title: 'วิดีโอ: AIA Prestige Club (หน้า 6)',
+            subtitle: 'AIA Healthier, Longer, Better Lives - เอไอเอ เพรสทีจ คลับ ยินดีต้อนรับ'
+        },
+        13: {
+            src: 'P-13-vdo.mp4',
+            title: 'วิดีโอ: รับผลประโยชน์รวมสูงสุด 800%* (หน้า 13)',
             subtitle: 'AIA Healthier, Longer, Better Lives - สิทธิประโยชน์ความคุ้มครองโรคร้ายแรง'
         },
-        14: {
-            src: 'https://storage.googleapis.com/connext-47f56.firebasestorage.app/ebook-2026/P14-vdo.mp4',
-            title: 'วิดีโอ: ต้องขอบคุณตัวเองตอนนั้น ที่ทำประกันโรคร้ายแรง (หน้า 14)',
+        20: {
+            src: 'P-20-vdo.mp4',
+            title: 'วิดีโอ: ต้องขอบคุณตัวเองตอนนั้น ที่ทำประกันโรคร้ายแรง (หน้า 20)',
             subtitle: 'AIA Healthier, Longer, Better Lives - เรื่องจริงและกำลังใจจากผู้เอาประกัน'
         }
     };
@@ -337,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let hasVideoInSpread = false;
         if (isDouble) {
-            const leftPage = currentPage % 2 === 0 ? currentPage : currentPage;
+            const leftPage = (currentPage % 2 === 1) ? (currentPage + 1) : currentPage;
             const rightPage = leftPage + 1;
             hasVideoInSpread = !!VIDEO_PAGES[leftPage] || !!VIDEO_PAGES[rightPage];
             const videoTag = hasVideoInSpread ? `<span class="ml-1.5 px-1.5 py-0.5 rounded bg-rose-100 text-rose-600 border border-rose-200 text-[10px] font-semibold inline-flex items-center"><i class="fa-solid fa-play text-[8px] mr-1"></i>วิดีโอ</span>` : '';
@@ -677,14 +682,15 @@ document.addEventListener('DOMContentLoaded', () => {
     btnClosePrint.addEventListener('click', closePrintModal);
 
     btnPrintCurrent.addEventListener('click', () => {
-        const pages = [PAGE_FILES[currentPage]];
+        let pages = [];
         // If in two page spread, also add adjacent page
         if (pageFlip && pageFlip.getOrientation() === 'landscape' && currentPage > 0 && currentPage < TOTAL_PAGES - 1) {
-            const rightPage = currentPage % 2 === 0 ? currentPage + 1 : currentPage - 1;
-            if (rightPage >= 0 && rightPage < TOTAL_PAGES && rightPage !== currentPage) {
-                pages.push(PAGE_FILES[rightPage]);
-                pages.sort();
-            }
+            const leftIdx = (currentPage % 2 === 1) ? currentPage : currentPage - 1;
+            const rightIdx = leftIdx + 1;
+            if (leftIdx >= 0 && leftIdx < TOTAL_PAGES) pages.push(PAGE_FILES[leftIdx]);
+            if (rightIdx >= 0 && rightIdx < TOTAL_PAGES) pages.push(PAGE_FILES[rightIdx]);
+        } else {
+            pages.push(PAGE_FILES[currentPage]);
         }
         triggerPrint(pages);
     });

@@ -17,4 +17,9 @@ Archive.zip
 
 # Large binaries omitted from Cloudflare Pages (hosted externally on Firebase Storage)
 *.pdf
-*.mp4
+P-07-vdo.mp4
+P-14-vdo.mp4
+P14-vdo.mp4
+
+# Update working folder
+eBook-update/

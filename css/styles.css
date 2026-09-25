@@ -74,7 +74,7 @@ body {
     box-shadow: none !important;
 }
 
-/* Center Back Cover (Page 36) in Landscape Mode: shift right 25% */
+/* Center Back Cover (Page 42) in Landscape Mode: shift right 25% */
 .stpageflip-container.is-cover-last {
     transform: translateX(25%);
     box-shadow: none !important;
